@@ -599,7 +599,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs-extra';
 import dayjs from 'dayjs';
-import { v4 as uuidv4 } from 'uuid'; // ✅ Import uuid
+import { v4 as uuidv4 } from 'uuid';
 
 import { config } from './config';
 import { preprocessImage, PreprocessMode } from './utils/preprocess';
@@ -610,7 +610,9 @@ import { loadConceptsFromExcel, identifyConcepts } from './utils/topicMatcher';
 const app = express();
 const IMAGE_DIR = config.IMAGE_DIR;
 const EXCEL_PATH = config.EXCEL_PATH;
-const PORT = config.PORT;
+
+// Ensure the port is a number for app.listen
+const PORT = typeof config.PORT === 'string' ? parseInt(config.PORT, 10) : config.PORT;
 
 // Ensure directories exist
 fs.ensureDirSync(IMAGE_DIR);
@@ -618,7 +620,7 @@ fs.ensureDirSync(IMAGE_DIR);
 // Load concepts once during boot
 const concepts = loadConceptsFromExcel(EXCEL_PATH);
 
-// ✅ Multer config with unique filename (timestamp + uuid)
+// Multer config with timestamp + UUID for safe multi-user upload
 const storage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, IMAGE_DIR),
   filename: (_, file, cb) => {
@@ -631,7 +633,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// 📌 Endpoint: POST /extract-text
+// POST /extract-text
 app.post('/extract-text', upload.single('image'), async (req, res): Promise<void> => {
   try {
     if (!req.file) {
@@ -662,5 +664,6 @@ app.post('/extract-text', upload.single('image'), async (req, res): Promise<void
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running and listening on port ${PORT}`);
 });
+
