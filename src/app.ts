@@ -656,11 +656,16 @@ app.post('/extract-text', upload.single('image'), async (req, res): Promise<void
     await fs.remove(originalPath);
     await fs.remove(processedPath);
 
-    res.json({ text: cleaned, topics });
+    res.json({ topics });
   } catch (err) {
     console.error('OCR error:', err);
     res.status(500).send('Error processing image');
   }
+});
+
+// Uptime monitor route to prevent Render from sleeping
+app.head('/', (req, res) => {
+  res.status(200).send('Backend is awake!');
 });
 
 app.listen(PORT, () => {
