@@ -9,6 +9,7 @@
     "postinstall": "npm rebuild sharp"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "dictionary-en": "^4.0.0",
     "express": "^5.1.0",
