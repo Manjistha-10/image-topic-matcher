@@ -600,7 +600,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
-
+import cors from 'cors';
 import { config } from './config';
 import { preprocessImage, PreprocessMode } from './utils/preprocess';
 import { extractTextFromImage } from './utils/ocr';
@@ -608,6 +608,11 @@ import { cleanText } from './utils/textCleaner';
 import { loadConceptsFromExcel, identifyConcepts } from './utils/topicMatcher';
 
 const app = express();
+app.use(cors({
+  origin: 'https://cps-ten.vercel.app/',
+  credentials: true,
+}));
+
 const IMAGE_DIR = config.IMAGE_DIR;
 const EXCEL_PATH = config.EXCEL_PATH;
 
