@@ -609,7 +609,7 @@ import { loadConceptsFromExcel, identifyConcepts } from './utils/topicMatcher';
 
 const app = express();
 app.use(cors({
-  origin: 'https://cps-ten.vercel.app/',
+  origin: 'https://cps-ten.vercel.app',
   credentials: true,
 }));
 
